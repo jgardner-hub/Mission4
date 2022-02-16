@@ -21,9 +21,8 @@ namespace Mission4.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -53,13 +52,15 @@ namespace Mission4.Migrations
 
                     b.HasKey("MovieId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             MovieId = 1,
-                            Category = "Science Fiction",
+                            CategoryId = 1,
                             Director = "Christopher Nolan",
                             Edited = false,
                             LentTo = "",
@@ -71,7 +72,7 @@ namespace Mission4.Migrations
                         new
                         {
                             MovieId = 2,
-                            Category = "Family",
+                            CategoryId = 2,
                             Director = "Chris Sanders, Dean DeBlois",
                             Edited = false,
                             LentTo = "",
@@ -83,7 +84,7 @@ namespace Mission4.Migrations
                         new
                         {
                             MovieId = 3,
-                            Category = "Action",
+                            CategoryId = 3,
                             Director = "Jon Watts",
                             Edited = false,
                             LentTo = "",
@@ -92,6 +93,76 @@ namespace Mission4.Migrations
                             Title = "Spider-Man: No Way Home",
                             Year = "2021"
                         });
+                });
+
+            modelBuilder.Entity("Mission4.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Science Fiction"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            CategoryName = "Drama"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            CategoryName = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            CategoryId = 7,
+                            CategoryName = "Miscellaneous"
+                        },
+                        new
+                        {
+                            CategoryId = 8,
+                            CategoryName = "Television"
+                        },
+                        new
+                        {
+                            CategoryId = 9,
+                            CategoryName = "VHS"
+                        });
+                });
+
+            modelBuilder.Entity("Mission4.Models.AddMovieResponse", b =>
+                {
+                    b.HasOne("Mission4.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
